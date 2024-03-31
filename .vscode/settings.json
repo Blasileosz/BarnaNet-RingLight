@@ -1,0 +1,3 @@
+{
+	"sonarlint.pathToCompileCommands": "${workspaceFolder}\\.pio\\build\\upesy_wroom\\compile_commands.json"
+}

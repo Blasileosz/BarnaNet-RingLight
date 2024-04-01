@@ -1,9 +1,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
-#include <freertos/event_groups.h>
 
 #include <esp_system.h>
-#include <esp_event.h>
 #include <esp_log.h>
 
 #include <nvs_flash.h>
@@ -11,8 +9,6 @@
 #include "B_ledDriver.h"
 
 static const char* tag = "RingLight";
-
-QueueHandle_t commandQueue;
 
 void app_main()
 {
@@ -29,17 +25,12 @@ void app_main()
 	B_SetUpRMTChannel();
 	ESP_LOGI(tag, "RMT channel set up");
 
-	// Get RMT channel speed
-	uint32_t outHz = 0;
-	rmt_get_counter_clock(B_USED_CHANNEL, &outHz);
-	ESP_LOGI(tag, "Clock speed: %u Hz", (unsigned int)outHz);
-
 	// Update ring
 	uint8_t* colorBufferPtr = B_GetColorBufferPointer();
-	int counter = 0;
+	int counter = 1;
 	while (true) {
 		colorBufferPtr[counter] = (colorBufferPtr[counter] != 32) * 32;
-		B_WriteData();
+		B_TransmitData();
 
 		counter = (counter + 3) % (B_LED_COUNT * 3);
 		vTaskDelay(1000 / portTICK_PERIOD_MS);

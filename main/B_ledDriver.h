@@ -6,7 +6,7 @@
 #include <driver/rmt_tx.h>
 
 #define B_LED_GPIO 13
-#define B_LED_COUNT 16
+#define B_LED_COUNT 16 * 2
 
 #define B_RMT_FREQ 40000000 // 40 MHz
 
